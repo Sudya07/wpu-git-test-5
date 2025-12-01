@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test HTML JS</title>
+</head>
+<body>
+    <h1>Hello World!</h1>
+    <p>Project ini untuk test integrasi Jira dan GitHub.</p>
+
+    <button id="btn">Klik Saya</button>
+    <p id="output"></p>
+
+    <script>
+        const btn = document.getElementById("btn");
+        const output = document.getElementById("output");
+
+        btn.addEventListener("click", () => {
+            output.textContent = "Button berhasil diklik!";
+        });
+    </script>
+</body>
+</html>

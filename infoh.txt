@@ -1,0 +1,110 @@
+jira software ->
+spaces ->
+add to organization - add to customers
+
+user > grup > people spaces > permission spaces
+
+
+can add by spaces
+
+
+
+
+
+privilege escalation - low user can create and edit field issue owned by other user
+
+haloo, saya menemukan kerentanan di Jira Software Cloud (bugbounty-test-<bugcrowd-name>.atlassian.net). Dimana attacker dengan low rendah bisa membuat issue dan mengedit issue milik user lain.
+
+
+
+
+1. add users attacker 
+2. hapus di grup confluence-users-duyvic
+3. buat satu board
+4. edit permission browse jadi any logged
+5. attacker capture request pada saat membuat issue dan mengedit issue milik user lain
+6. ubah permission jadi hanya didalam grup confluence-users-duyvic
+7. kirim request yang sudah di capture tadi
+8. attacker bisa membuat issue dan mengedit issue milik user lain
+
+
+
+
+
+attacker hapus dari people projek
+attacker masih bisa akses karena permission setting masih mengijinkan
+
+
+haloo, saya menemukan kerentanan di Jira Software Cloud (bugbounty-test-<bugcrowd-name>.atlassian.net). Dimana attacker dengan privilege terbatas bisa membuat, edit, dan delete related rowk dan work item didalam version, padahal sudah saya setting agar attacker tidak bisa mengakses fitur version lewat group.
+
+EDIT VERSION
+1. add user attacker
+2. pastikan attacker tidak masuk grup confluence-users-duyvic
+3. berikut setingan permission
+- browser = user logged
+- managed version = user in grup confluence-users-duyvic
+4. buat satu board
+5. add people attacker ke board tersebut dan beri role admin
+6. capture request pada saat attacker menambah, edit dan delete related work dan work item pada version milik admin
+7. hapus people attacker dari board tersebut
+8. kirim request yang sudah di capture
+9. attacker bisa mengedit version milik admin
+
+
+haloo, saya menemukan kerentanan di Jira Software Cloud (bugbounty-test-<bugcrowd-name>.atlassian.net). Dimana sprint masih bisa dihapus dan di edit oleh user lain meskipun fitur sprint dalam ke adaan tidak aktif.
+
+EDIT DELETE SPRINT
+1. add user attacker
+2. buat satu scrum publik
+3. add people attacker dengan role view yang artinya attacker masih bisa melakukan edit delete karena tipe board publik
+4. capture ketika attacker edit delete sprint yang dibuat user lain
+5. victim nonaktifkan setingan sprint pada scrum tersebut dan lihat untuk memastikan bahwa tidak bisa melakukan aksi apapun di sprint karena fitur di nonaktifkan
+6. attacker kirim request yang udah di capture
+7. victim aktifkan lagi fitur sprint dan lihat sprint ada yang ke hapus dan edit oleh attackerr
+
+
+
+
+
+
+====
+1. Attacker User product access
+
+The attacker account only has low-privilege access in Jira Software Cloud.
+Specifically:
+- The attacker is not a member of the confluence-users-duyvic group.
+- The attacker only has basic logged-in user access without any special project permissions.
+- The attacker is not added to the target project (BRDBRD).
+
+So the attacker should not be allowed to create or edit issues in that project.
+
+2. Project type / permissions
+
+- Project type: Bug Tracking (Jira Software board)
+- Permission scheme: Modified so that initially "Browse Projects" = Any logged-in user (used only for reproduction)
+- All other permissions remain default Jira Software permissions.
+
+3. Attacker user project access
+
+The attacker user has no project access to the target project (BRDBRD) except the temporary “Browse Projects” permission during testing.
+After switching permissions back so only confluence-users-duyvic can access the project:
+The attacker still cannot view the project from the UI
+but
+The attacker CAN STILL send the saved GraphQL request and create/edit issues, which is the vulnerability.
+
+
+
+
+haloo, saya menemukan kerentanan di Jira Software Cloud (bugbounty-test-<bugcrowd-name>.atlassian.net). Dimana attacker bisa melakukan akses archive pada issue yang harusnya tidak bisa (dilihat dari UI). bahkan di UI attacker tidak bisa masuk ke projek tersebut
+1. add users attacker 
+2. masukan attacker ke grup confluence-users-duyvic
+3. buat satu projek jira service management
+4. pastikan attacker tidak bisa mengakses projek tersebut
+5. attacker bisa mengcapture requestnya di akun sendiri
+6. kirim request http yang sudah dimodifikasi ini
+
+====
+-masuk grup jira service management bisa akses page yang sama dengan admin aplikasi
+-role dalam grup tidak berpengaruh
+
+-walaupun punya akses admin tetap tidak bisa karena pengaturan permission
